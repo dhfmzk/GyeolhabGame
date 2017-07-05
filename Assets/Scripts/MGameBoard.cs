@@ -25,6 +25,7 @@ public class MGameBoard : MonoBehaviour {
 
     // Model for Score
     public ReactiveProperty<int> score;
+    public ReactiveProperty<int> combo;
 
     private void Awake() {
         // Set Timer Model
@@ -41,6 +42,7 @@ public class MGameBoard : MonoBehaviour {
 
         // Set Score Model
         score = new IntReactiveProperty(0);
+        combo = new IntReactiveProperty(0);
 
         if(_instance == null) {
             _instance = this;
@@ -53,27 +55,19 @@ public class MGameBoard : MonoBehaviour {
     }
 
     private void Start() {
+        // Timmer Model
         Observable.Interval(TimeSpan.FromMilliseconds(1))
             .Subscribe(_ => {
                 if(timerReactiveProperty.Value > 0) {
                     timerReactiveProperty.Value--;
                 }
+                else {
+                    combo.Value = 0;
+                    score.Value--;
+                    timerReactiveProperty.Value = _maxTime;
+                }
             })
             .AddTo(this);
-
-        currentAnswer.ObserveCountChanged()
-            .Where(Count => Count == 3)
-            .Subscribe(_ => {
-                List<int> temp = new List<int>() { currentAnswer[0], currentAnswer[1], currentAnswer[2] };
-                for(int i = 0; i < answers.Count; ++i) {
-                    if(temp.Contains(answers[i][0]) && temp.Contains(answers[i][1]) && temp.Contains(answers[i][2])) {
-                        Debug.Log("정답");
-                        answers.RemoveAt(i);
-                        break;
-                    }
-                }
-                currentAnswer.Clear();
-            });
     }
 
     public void ResetGame() {
