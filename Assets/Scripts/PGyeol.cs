@@ -23,6 +23,9 @@ public class PGyeol : MonoBehaviour {
                     Debug.Log("정답");
                     model.score.Value += (model.combo.Value + 1) * 3;
                 }
+                else {
+
+                }
             });
     }
 }

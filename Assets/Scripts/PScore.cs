@@ -22,12 +22,12 @@ public class PScore : MonoBehaviour {
 
         model.score.AsObservable()
             .Subscribe(Score => {
-                scoreText.text = Score.ToString();
+                scoreText.text = Score.ToString() + " 점";
             });
 
         model.combo.AsObservable()
             .Subscribe(Combo => {
-                comboText.text = Combo.ToString();
+                comboText.text = Combo.ToString() + "콤보!";
             });
 
     }

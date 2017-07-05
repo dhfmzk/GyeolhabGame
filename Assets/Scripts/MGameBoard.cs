@@ -57,6 +57,7 @@ public class MGameBoard : MonoBehaviour {
     private void Start() {
         // Timmer Model
         Observable.Interval(TimeSpan.FromMilliseconds(1))
+            .Where(_ => currentCards.Count != 0)
             .Subscribe(_ => {
                 if(timerReactiveProperty.Value > 0) {
                     timerReactiveProperty.Value--;
