@@ -14,17 +14,10 @@ I want you to study "How to use UniRx" with this project. The techniques used in
 
 ![EX](./ReadmePic/ex.JPG)
 
-## Rule Video
-Gyeol hab game [rule video](https://www.youtube.com/watch?v=0gCfLVFs79w) in `The Genius Game`
-
-## Result
-![gyeolhabgame_play](./ReadmePic/pic.JPG)
-
 ## Todo
-- [ ] : Separate models
-- [ ] : Make card button click view
-- [ ] : Find better resource (ex. modern UI, animation, sound)
-- [ ] : Save result and Make ranking history
+- [ ] : Refactoring To UniRx MV(R)P
+- [ ] : Change Flat Style UI
+- [ ] : Extra Scene (ex. main, menu, rank... etc)
 
 ## License
 <img align="right" src="http://opensource.org/trademarks/opensource/OSI-Approved-License-100x137.png">
