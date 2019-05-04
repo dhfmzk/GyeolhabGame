@@ -1,9 +1,6 @@
 # GyeolhabGame
 > Gyeolhab game in tv show [the Genius game] with UniRx
 
-This game is some kind of UniRx Sample by [Sang Hyeon Kim](https://github.com/rlatkdgus500)  
-I want you to study "How to use UniRx" with this project. The techniques used in this sample can be found [here](https://github.com/rlatkdgus500/UniRx-Sample).
-
 ## Rule
 > Find 3 card set, which has three element with the same or different properties.
 
@@ -12,11 +9,15 @@ I want you to study "How to use UniRx" with this project. The techniques used in
 3. If 3 card's element are all same or different, you get +1 point. (not -> -1 point)
 4. If you think you've found it, you get 4 points through the `Gyeol` button. (not -> -4 point)
 
-![EX](./ReadmePic/ex.JPG)
+## Preview
+**Update Soon**
+
+## System (Graph)
+**Update Soon**
 
 ## Todo
 - [ ] : Refactoring To UniRx MV(R)P
-- [ ] : Change Flat Style UI
+- [X] : Change Flat Style UI
 - [ ] : Extra Scene (ex. main, menu, rank... etc)
 
 ## License
