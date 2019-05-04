@@ -9,10 +9,11 @@ public class GameBoardModel : MonoBehaviour {
     // Model for Timer
     public static int _maxTime = 3000;
     public int maxTime;
-    public ReactiveProperty<int> timerReactiveProperty;
+    public IntReactiveProperty timerReactiveProperty;
 
     // Model for GameBoard
-    public Sprite[] _cardDeck = new Sprite[27];
+
+    public GameBoardModelAsset gameBoardModelAsset;
     public ReactiveCollection<Sprite> currentCards;
     public ReactiveCollection<int[]> answers;
     public ReactiveCollection<int> currentAnswer;
@@ -26,11 +27,6 @@ public class GameBoardModel : MonoBehaviour {
         // Set Timer Model
         maxTime = _maxTime;
         timerReactiveProperty = new IntReactiveProperty(_maxTime);
-
-        // Set GameBoard Model
-        for(int i = 0; i < 27; ++i) {
-            _cardDeck[i] = Resources.Load<Sprite>($"Cards/card_{i}");
-        }
 
         currentCards = new ReactiveCollection<Sprite>();
         answers = new ReactiveCollection<int[]>();
