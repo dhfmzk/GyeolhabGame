@@ -3,12 +3,12 @@
 
 ## Rule
 Find 3 card set, which has three element with the same or different properties.
-```
-1. Random select 9 cards of 27 cards of different `shapes`, `background colors`, and `shapes colors`
-2. Pick 3 cards
-3. If 3 card's element are all same or different, you get +1 point. (not -> -1 point)
-4. If you think you've found it, you get 4 points through the `Gyeol` button. (not -> -4 point)
-```
+
+>1. Random select 9 cards of 27 cards of different `shapes`, `background colors`, and `shapes colors`
+>2. Pick 3 cards
+>3. If 3 card's element are all same or different, you get +1 point. (not -> -1 point)
+>4. If you think you've found it, you get 4 points through the `Gyeol` button. (not -> -4 point)
+
 ## Preview
 **Update Soon**
 
@@ -16,9 +16,10 @@ Find 3 card set, which has three element with the same or different properties.
 **Update Soon**
 
 ## Todo
-- [ ] : Refactoring To UniRx MV(R)P
+- [X] : Refactoring To UniRx MV(R)P
 - [X] : Change Flat Style UI
 - [X] : Extra Scene (ex. main, menu, rank... etc)
+- [ ] : Add DoTween animations
 
 ## License
 <img align="right" src="http://opensource.org/trademarks/opensource/OSI-Approved-License-100x137.png">
