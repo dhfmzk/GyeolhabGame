@@ -16,15 +16,37 @@ public class InGamePresenter : MonoBehaviour {
 
     private void Start() {
 
+        localGameModel.isGamePlaying
+            .DistinctUntilChanged()
+            .Where(e => e)
+            .Subscribe(e => {
+                // Game Start
+                // 변수 구독
+                // 타이머 시작
+                GameStart();
+            });
+        
         // Button click event
         gameBoardView.OnClickCards.Subscribe(ButtonClick);
+        
+        gyeolButton.OnClickAsObservable()
+            .Where(_ => HasLeftAnswer())
+            .Subscribe(e => {
+                localGameModel.score.Value -= 4;
+                localGameModel.combo.Value = 0;
+            });
 
+        gyeolButton.OnClickAsObservable()
+            .Where(_ => !HasLeftAnswer())
+            .Subscribe(e => {
+                localGameModel.score.Value += 4;
+                localGameModel.combo.Value++;
+            });
 
         // Answer Calc logic
         var currentAnswerStream = localGameModel.currentAnswer
                                     .ObserveCountChanged()
-                                    .Where(e => e == 3)
-                                    .Publish();
+                                    .Where(e => e == 3);
         
         currentAnswerStream
             .Where(e => IsCorrectAnswer())
@@ -41,20 +63,9 @@ public class InGamePresenter : MonoBehaviour {
                 localGameModel.combo.Value = 0;
                 localGameModel.currentAnswer.Clear();
             });
-        
-        gyeolButton.OnClickAsObservable()
-            .Where(_ => HasLeftAnswer())
-            .Subscribe(e => {
-                localGameModel.score.Value -= 4;
-                localGameModel.combo.Value = 0;
-            });
+    }
 
-        gyeolButton.OnClickAsObservable()
-            .Where(_ => !HasLeftAnswer())
-            .Subscribe(e => {
-                localGameModel.score.Value += 4;
-                localGameModel.combo.Value++;
-            });
+    private void GameStart() {
     }
 
     private bool IsCorrectAnswer() {

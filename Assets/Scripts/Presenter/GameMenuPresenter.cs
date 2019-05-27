@@ -15,13 +15,18 @@ public class GameMenuPresenter : MonoBehaviour {
 
         startButton.OnClickAsObservable()
             .Subscribe(e => {
-                Debug.Log($"On Click Start Button");
                 localGameModel.isGamePlaying.Value = true;
             });
 
         localGameModel.isGamePlaying
             .Subscribe(e => {
                 animator.SetBool("test", e);
+            });
+        
+        localGameModel.isGamePlaying
+            .DistinctUntilChanged()
+            .Subscribe(e => {
+                animator.SetBool("isActive", !e);
             });
     }
 }
