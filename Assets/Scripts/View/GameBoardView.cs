@@ -25,4 +25,12 @@ public class GameBoardView : MonoBehaviour {
                         })
                         .ToList();
     }
+
+    public void UpdateView(ReactiveCollection<Sprite> data) {
+
+        for (int i = 0; i < data.Count; ++i) {
+
+            cards[i].GetComponent<Image>().sprite = data[i];
+        }
+    }
 }
