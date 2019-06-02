@@ -19,11 +19,6 @@ public class GameMenuPresenter : MonoBehaviour {
             });
 
         localGameModel.isGamePlaying
-            .Subscribe(e => {
-                animator.SetBool("test", e);
-            });
-        
-        localGameModel.isGamePlaying
             .DistinctUntilChanged()
             .Subscribe(e => {
                 animator.SetBool("isActive", !e);

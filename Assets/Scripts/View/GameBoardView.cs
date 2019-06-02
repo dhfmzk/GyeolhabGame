@@ -9,7 +9,7 @@ using UniRx;
 public class GameBoardView : MonoBehaviour {
 
     
-    public Button[] cards = new Button[9];
+    public Toggle[] cards = new Toggle[9];
 
     private Subject<int> _onClickCards = new Subject<int>();
     public Subject<int> OnClickCards { get { return _onClickCards; } }
@@ -20,7 +20,7 @@ public class GameBoardView : MonoBehaviour {
         
         eventCache = cards.Select((e, i) => {
                             var index = i;
-                            return e.OnClickAsObservable()
+                            return e.OnValueChangedAsObservable()
                                 .Subscribe(x => _onClickCards.OnNext(index));
                         })
                         .ToList();
