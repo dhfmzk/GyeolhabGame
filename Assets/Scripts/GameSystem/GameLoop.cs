@@ -7,9 +7,9 @@ namespace GameSystem
 {
     public class GameLoop : MonoBehaviour
     {
-        [SerializeField] 
-        private GameModel gameModel;
-
+        [SerializeField] private GameSetting gameSetting;
+        [SerializeField] private GameModel gameModel;
+        
         public IGameModel GameModel => this.gameModel;
 
         public void Start()
