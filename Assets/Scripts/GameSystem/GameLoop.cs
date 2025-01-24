@@ -9,7 +9,8 @@ namespace GameSystem
     {
         [SerializeField] private GameSetting gameSetting;
         [SerializeField] private GameModel gameModel;
-        
+
+        public GameSetting GameSetting => this.gameSetting;
         public IGameModel GameModel => this.gameModel;
 
         public void Start()
