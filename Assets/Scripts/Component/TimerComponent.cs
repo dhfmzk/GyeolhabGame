@@ -1,12 +1,9 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 
-namespace View
+namespace Component
 {
-    public class TimerView : MonoBehaviour
+    public class TimerComponent : MonoBehaviour
     {
-        public Image timerGauge;
-        
         // Start is called before the first frame update
         void Start()
         {

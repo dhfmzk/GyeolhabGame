@@ -2,7 +2,6 @@ using System;
 
 namespace Domain
 {
-    // Score Data
     [Serializable]
     public class ScoreData
     {

@@ -4,17 +4,17 @@ using R3;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Presenter
+namespace Component
 {
-    public class GameMenuPresenter : MonoBehaviour
+    public class GameMenuComponent : MonoBehaviour
     {
         public GameModel gameModel;
 
         public Button startButton;
 
         private Animator Animator => this.GetComponent<Animator>();
-        private void Start() {
-
+        private void Start()
+        {
             this.startButton.OnClickAsObservable()
                 .Subscribe(e =>
                 {
