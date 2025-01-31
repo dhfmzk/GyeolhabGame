@@ -1,19 +1,34 @@
-﻿using UnityEngine;
+﻿using System;
+using Component.Interface;
+using GameSystem;
+using R3;
+using UnityEngine;
+using View;
 
 namespace Component
 {
-    public class TimerComponent : MonoBehaviour
+    public class TimerComponent : MonoBehaviour, IUpdatableComponent
     {
-        // Start is called before the first frame update
-        void Start()
+        public TimerView timerView;
+
+        public void ComponentAwake()
         {
-        
         }
 
-        // Update is called once per frame
-        void Update()
+        public void ComponentUpdate(TimeSpan deltaTime)
         {
-        
+            if (!GameLoop.I.GameModel.IsGamePlaying)
+            {
+                GameLoop.I.GameModel.ResetTime();
+                return;
+            }
+            
+            GameLoop.I.GameModel.DecreaseTime(deltaTime);
+
+            if (GameLoop.I.GameModel.RemainTurnTime <= TimeSpan.FromSeconds(0.0f))
+            {
+                GameLoop.I.GameModel.ResetTime();
+            }
         }
     }
 }
