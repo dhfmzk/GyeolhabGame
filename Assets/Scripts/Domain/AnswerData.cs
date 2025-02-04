@@ -8,8 +8,13 @@ namespace Domain
         public int Answer2;
         public int Answer3;
 
-        public bool IsCompleted => this.Contain(AnswerData.Invalid);
-        
+        public bool IsCompleted => !this.Contain(AnswerData.Invalid);
+
+        public AnswerData()
+        {
+            this.Reset();
+        }
+
         public bool Contain(int value)
         {
             return this.Answer1 == value || this.Answer2 == value || this.Answer3 == value;

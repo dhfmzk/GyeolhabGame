@@ -1,11 +1,8 @@
 using System;
 using Domain;
-using GameSystem;
 using R3;
 using UnityEngine;
 using UnityEngine.UI;
-using R3.Triggers;
-using UnityEngine.EventSystems;
 
 namespace View
 {
@@ -18,14 +15,9 @@ namespace View
         
         private static readonly int IsSelected = Animator.StringToHash("IsSelected");
 
-        public void Awake()
+        public Observable<Unit> OnClickAsObservable()
         {
-        }
-
-        public Observable<PointerEventData> OnClickAsObservable()
-        {
-            return this.button.OnPointerClickAsObservable()
-                .Where(_ => GameLoop.I.GameModel.IsGamePlaying);
+            return this.button.OnClickAsObservable();
         }
 
         public void UpdateView(in CardData data)

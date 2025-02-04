@@ -1,8 +1,8 @@
 using System;
-using System.Collections.Generic;
 using Component.Interface;
 using Domain;
 using GameSystem;
+using Model.Interface;
 using R3;
 using UnityEngine;
 using View;
@@ -38,19 +38,21 @@ namespace Component
             }
         }
     
-        private void OnClickCard(int n)
+        private void OnClickCard(int value)
         {
-            if (!GameLoop.I.GameModel.TryPickCard(n))
-            {
-                // TODO : 알람
-            }
+            var result = GameLoop.I.GameModel.TryToggleCard(value);
+            
+            Debug.Log($"[{typeof(BoardComponent)}|{result}] Picked Answer : {GameLoop.I.GameModel.GetPicked()}");
 
-            if (GameLoop.I.GameModel.IsCompletePicked)
+            if (result != SelectResult.ToggleOn)
             {
                 return;
             }
-
-            GameLoop.I.GameModel.TrySubmitAnswer();
+            
+            if (GameLoop.I.GameModel.IsCompletePicked)
+            {
+                GameLoop.I.GameModel.TrySubmitAnswer();
+            }
         }
     }
 }

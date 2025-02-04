@@ -10,7 +10,7 @@ namespace View
     {
         public CardView[] cards = new CardView[9];
 
-        private readonly Subject<int> _subject = new ();
+        private readonly Subject<int> _subject = new();
 
         void Awake()
         {
@@ -18,8 +18,12 @@ namespace View
             {
                 var index = i;
                 cardView.OnClickAsObservable()
-                    .Subscribe(x => this._subject.OnNext(index))
-                    .AddTo(this);
+                    .Subscribe(x =>
+                    {
+                        Debug.Log("????");
+                        this._subject.OnNext(index);
+                    })
+                    .AddTo(this.gameObject);
             }
         }
         

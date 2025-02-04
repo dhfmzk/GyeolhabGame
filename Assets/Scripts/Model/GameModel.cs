@@ -92,22 +92,32 @@ namespace Model
             // Step 2) Reset Picked Answer
             this.PickedAnswer.Reset();
         }
-
-        public bool TryPickCard(int value)
+        
+        public SelectResult TryToggleCard(int index)
         {
-            // CASE 0) Already Picked
-            if (this.PickedAnswer.Contain(value))
+            var value = this.Deck.Cards[index];
+            
+            if (this.PickedAnswer.IsCompleted)
             {
-                return this.PickedAnswer.Remove(value);
+                return SelectResult.AlreadyCompleted; // Already Completed
             }
             
-            // CASE 1) New Pick
-            if (!this.PickedAnswer.IsCompleted)
+            if (!this.PickedAnswer.Contain(value))
             {
-                return this.PickedAnswer.Add(value);
+                if (this.PickedAnswer.Add(value))
+                {
+                    return SelectResult.ToggleOn;
+                }
+            }
+            else
+            {
+                if (this.PickedAnswer.Remove(value))
+                {
+                    return SelectResult.ToggleOff;
+                }
             }
             
-            return false;
+            return SelectResult.SystemError;
         }
 
         public bool IsPicked(int value)
@@ -135,6 +145,11 @@ namespace Model
 
         public int[] DeckList => this.Deck.Cards;
         public int DeckSize => this.Deck?.Cards?.Length ?? 0;
+
+        public string GetPicked()
+        {
+            return $"{this.PickedAnswer.Answer1}, {this.PickedAnswer.Answer2}, {this.PickedAnswer.Answer3}";
+        }
 
         private void GameStart()
         {

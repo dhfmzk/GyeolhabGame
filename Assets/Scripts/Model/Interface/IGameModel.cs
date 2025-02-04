@@ -3,6 +3,14 @@ using Domain;
 
 namespace Model.Interface
 {
+    public enum SelectResult
+    {
+        ToggleOn,
+        ToggleOff,
+        AlreadyCompleted,
+        SystemError,
+    }
+    
     public interface IGameModel
     {
         // State
@@ -20,13 +28,13 @@ namespace Model.Interface
         public int DeckSize { get; }
         
         public bool IsPicked(int value);
-
+        public string GetPicked();
 
 
         // API
         public void StartGame();
 
-        public bool TryPickCard(int value);
+        public SelectResult TryToggleCard(int value);
         public bool TrySubmitAnswer();
         
         public void DecreaseScore(int value);
