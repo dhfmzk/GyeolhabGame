@@ -8,23 +8,34 @@ namespace Model
     {
         [Header("Icon Sprite Setting")] 
         public Sprite[] iconImages;
-        public Sprite icon1;
-        public Sprite icon2;
-        public Sprite icon3;
         
         [Space]
         [Header("Icon Color Setting")]
         public Color[] iconColors;
-        public Color colorIcon1;
-        public Color colorIcon2;
-        public Color colorIcon3;
 
         [Space]
         [Header("Base Color Setting")]
         public Color[] baseColors;
-        public Color colorBase1;
-        public Color colorBase2;
-        public Color colorBase3;
-       
+
+        public Sprite GetIconImage(int value)
+        {
+            var index = value / 9;
+            
+            return this.iconImages[index];
+        }
+        
+        public Color GetIconColor(int value)
+        {
+            var index = value % 9 / 3;
+            
+            return this.iconColors[index];
+        }
+        
+        public Color GetBaseColor(int value)
+        {
+            var index = value % 3;
+            
+            return this.baseColors[index];
+        }
     }
 }

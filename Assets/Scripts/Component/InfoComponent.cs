@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace Component
 {
+    [Serializable]
     public class InfoComponent : MonoBehaviour, IAwakableComponent, IUpdatableComponent
     {
         public TextMeshProUGUI scoreText;

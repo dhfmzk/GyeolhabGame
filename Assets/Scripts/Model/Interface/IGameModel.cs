@@ -1,4 +1,5 @@
 using System;
+using Domain;
 
 namespace Model.Interface
 {
@@ -15,8 +16,13 @@ namespace Model.Interface
         // Query
         public bool HasRemainAnswer { get; }
         public bool IsCompletePicked { get; }
+        public int[] DeckList { get; }
+        public int DeckSize { get; }
         
-        
+        public bool IsPicked(int value);
+
+
+
         // API
         public void StartGame();
 

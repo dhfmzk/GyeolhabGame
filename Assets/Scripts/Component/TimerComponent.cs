@@ -7,13 +7,10 @@ using View;
 
 namespace Component
 {
+    [Serializable]
     public class TimerComponent : MonoBehaviour, IUpdatableComponent
     {
         public TimerView timerView;
-
-        public void ComponentAwake()
-        {
-        }
 
         public void ComponentUpdate(TimeSpan deltaTime)
         {

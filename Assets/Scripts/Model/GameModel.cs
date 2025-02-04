@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Domain;
 using GameSystem;
 using Model.Interface;
-using UnityEngine;
 
 namespace Model
 {
@@ -44,6 +42,7 @@ namespace Model
         public void StartGame()
         {
             this.GameState = GameState.Playing;
+            this.Deck.Reset();
         }
 
         public void DecreaseTime(TimeSpan value)
@@ -111,6 +110,11 @@ namespace Model
             return false;
         }
 
+        public bool IsPicked(int value)
+        {
+            return this.PickedAnswer.Contain(value);
+        }
+
         public bool TrySubmitAnswer()
         {
             if (this.HasRemainAnswer)
@@ -128,6 +132,9 @@ namespace Model
         public bool IsCompletePicked => this.PickedAnswer.IsCompleted;
         
         public bool HasRemainAnswer => this.Answers.Count > 0;
+
+        public int[] DeckList => this.Deck.Cards;
+        public int DeckSize => this.Deck?.Cards?.Length ?? 0;
 
         private void GameStart()
         {

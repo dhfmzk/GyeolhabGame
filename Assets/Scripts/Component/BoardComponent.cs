@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using Component.Interface;
+using Domain;
 using GameSystem;
 using R3;
 using UnityEngine;
@@ -21,31 +23,18 @@ namespace Component
 
         public void ComponentUpdate(TimeSpan deltaTime)
         {
-        }
-
-        public void NewGame()
-        {
-            // // Answer Calc logic
-            // var currentAnswerStream = localGameModel.currentAnswer
-            //                             .ObserveCountChanged()
-            //                             .Where(e => e == 3);
-            //
-            // currentAnswerStream
-            //     .Where(e => IsCorrectAnswer())
-            //     .Subscribe(e => {
-            //         localGameModel.score.Value += 2;
-            //         localGameModel.combo.Value++;
-            //         localGameModel.currentAnswer.Clear();
-            //     });
-            //
-            // currentAnswerStream
-            //     .Where(e => !IsCorrectAnswer())
-            //     .Subscribe(e => 
-            //     {
-            //         localGameModel.score.Value -= 2;
-            //         localGameModel.combo.Value = 0;
-            //         localGameModel.currentAnswer.Clear();
-            //     });
+            for (var i = 0; i < GameLoop.I.GameModel.DeckSize; i++)
+            {
+                this.boardView.UpdateView(
+                    index: i,
+                    data: new CardData
+                    {
+                        isSelected = GameLoop.I.GameModel.IsPicked(i),
+                        iconImage = GameLoop.I.GameSetting.GetIconImage(i),
+                        iconColor = GameLoop.I.GameSetting.GetIconColor(i),
+                        baseColor = GameLoop.I.GameSetting.GetBaseColor(i),
+                    });
+            }
         }
     
         private void OnClickCard(int n)

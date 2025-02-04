@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Domain;
 using R3;
 using UnityEngine;
@@ -33,6 +34,11 @@ namespace View
             {
                 this.cards[i].UpdateView(data[i]);
             }
+        }
+
+        public void UpdateView(int index, in CardData data)
+        {
+            this.cards[index].UpdateView(data);
         }
     }
 }
