@@ -1,49 +1,41 @@
+using System;
+using System.Linq;
+
 namespace Domain
 {
     public record AnswerData
     {
         public static readonly int Invalid = -1;
 
-        public int Answer1;
-        public int Answer2;
-        public int Answer3;
+        private int[] answers;
 
-        public bool IsCompleted => !this.Contain(AnswerData.Invalid);
+        public bool IsCompleted => !this.Contains(AnswerData.Invalid);
 
         public AnswerData()
         {
             this.Reset();
         }
 
-        public bool Contain(int value)
+        public bool Contains(int value)
         {
-            return this.Answer1 == value || this.Answer2 == value || this.Answer3 == value;
+            return this.answers.Contains(value);
         }
 
         public void Reset()
         {
-            this.Answer1 = -1;
-            this.Answer2 = -1;
-            this.Answer3 = -1;
+            this.answers = new[] { Invalid, Invalid, Invalid };
         }
 
         public bool Add(int value)
         {
-            if (this.Answer1 == Invalid)
+            for (var i = 0; i < this.answers.Length; i++)
             {
-                this.Answer1 = value;
-                return true;
-            }
-            
-            if (this.Answer2 == Invalid)
-            {
-                this.Answer2 = value;
-                return true;
-            }
-            
-            if (this.Answer3 == Invalid)
-            {
-                this.Answer3 = value;
+                if (this.answers[i] != Invalid)
+                {
+                    continue;
+                }
+                
+                this.answers[i] = value;
                 return true;
             }
 
@@ -52,21 +44,14 @@ namespace Domain
 
         public bool Remove(int value)
         {
-            if (this.Answer1 == value)
+            for (var i = 0; i < this.answers.Length; i++)
             {
-                this.Answer1 = Invalid;
-                return true;
-            }
-            
-            if (this.Answer2 == value)
-            {
-                this.Answer2 = Invalid;
-                return true;
-            }
-            
-            if (this.Answer3 == value)
-            {
-                this.Answer3 = Invalid;
+                if (this.answers[i] != value)
+                {
+                    continue;
+                }
+                
+                this.answers[i] = Invalid;
                 return true;
             }
             
@@ -81,10 +66,31 @@ namespace Domain
             {
                 return false;
             }
-            
-            return (this.Answer1 == answer1 || this.Answer2 == answer1 || this.Answer3 == answer1) &&
-                   (this.Answer1 == answer2 || this.Answer2 == answer2 || this.Answer3 == answer2) &&
-                   (this.Answer1 == answer3 || this.Answer2 == answer3 || this.Answer3 == answer3);
+
+            return this.Contains(answer1) && this.Contains(answer2) && this.Contains(answer3);
+        }
+        
+        public bool Equals(in AnswerData answer)
+        {
+            if (answer == null)
+            {
+                return false;
+            }
+
+            foreach (var item in this.answers)
+            {
+                if (!answer.answers.Contains(item))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+        
+        public override string ToString()
+        {
+            return $"[AnswerData : {this.answers[0]}, {this.answers[1]}, {this.answers[2]}]";
         }
     }
 }

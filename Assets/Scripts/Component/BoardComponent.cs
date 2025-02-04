@@ -40,18 +40,18 @@ namespace Component
     
         private void OnClickCard(int value)
         {
-            var result = GameLoop.I.GameModel.TryToggleCard(value);
+            var result = GameLoop.I.GameModel.ToggleCard(value);
             
-            Debug.Log($"[{typeof(BoardComponent)}|{result}] Picked Answer : {GameLoop.I.GameModel.GetPicked()}");
+            Debug.Log($"[{typeof(BoardComponent)}|{result}] Picked Answer : {GameLoop.I.GameModel.GetPicked()} | Answer : {GameLoop.I.GameModel.GetAnswers()}");
 
-            if (result != SelectResult.ToggleOn)
+            if (result != ToggleResult.ToggleOn)
             {
                 return;
             }
             
-            if (GameLoop.I.GameModel.IsCompletePicked)
+            if (GameLoop.I.GameModel.IsPickCompleted)
             {
-                GameLoop.I.GameModel.TrySubmitAnswer();
+                GameLoop.I.GameModel.SubmitPicked();
             }
         }
     }

@@ -1,4 +1,5 @@
 using GameSystem;
+using Model.Interface;
 using R3;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,13 +16,10 @@ namespace Component
                 .Select(_ => GameLoop.I.GameModel.HasRemainAnswer)
                 .Subscribe(hasRemainAnswer =>
                 {
-                    if (hasRemainAnswer)
+                    var result = GameLoop.I.GameModel.SubmitGyeol();
+                    if (result != SummitResult.Correct)
                     {
-                        GameLoop.I.GameModel.DecreaseScore(4);
-                    }
-                    else
-                    {
-                        GameLoop.I.GameModel.IncreaseScore(4);
+                        // TODO
                     }
                 })
                 .AddTo(this);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Domain;
 using GameSystem;
 using Model.Interface;
@@ -9,52 +10,84 @@ namespace Model
     [Serializable]
     public class GameModel : IGameModel
     {
-        // Settings
         public float resetTime = 3000.0f;
-
-        // State
-        public GameState GameState { get; private set; }
-        public PlayingState PlayingState { get; private set; }
+        private GameState _gameState { get; set; }
+        private PlayingState _playingState { get; set; }
+        private TimeSpan _remainTurnTime { get; set; }
         
-        // Timer
-        public TimeSpan RemainTurnTime { get; private set; }
-        
-        // Score
-        public int Score { get; private set; }
-        public int Combo { get; private set; }
+        private int _score { get; set; }
+        private int _combo { get; set; }
 
         // Card Data
-        public DeckData Deck { get; private set; }
-        public List<AnswerData> Answers { get; private set; }
-        public AnswerData PickedAnswer { get; private set; }
+        private DeckData Deck { get; set; }
+        private List<AnswerData> Answers { get; set; }
+        private AnswerData PickedAnswer { get; set; }
 
+        public GameState GameState => this._gameState;
+        public PlayingState PlayingState => this._playingState;
+
+        public int Score => this._score;
+        public int Combo => this._combo;
+        public TimeSpan RemainTurnTime => this._remainTurnTime;
+        public bool IsGamePlaying => this.GameState == GameState.Playing;
+        
         public GameModel()
         {
-            this.GameState = GameState.Main;
-            this.PlayingState = PlayingState.None;
+            this._gameState = GameState.Main;
+            this._playingState = PlayingState.None;
 
             this.Deck = new DeckData(9);
             this.Answers = new List<AnswerData>();
             this.PickedAnswer = new AnswerData();
         }
 
-        public bool IsGamePlaying => this.GameState == GameState.Playing;
+#region Query
+        
+        public bool IsPickCompleted => this.PickedAnswer.IsCompleted;
+        
+        public bool HasRemainAnswer => this.Answers.Count > 0;
+
+        public int[] DeckList => this.Deck.Cards;
+        public int DeckSize => this.Deck?.Cards?.Length ?? 0;
+        
+        public bool IsPicked(int value) => this.PickedAnswer.Contains(value);
+        
+        // Temp
+        public string GetPicked()
+        {
+            return this.PickedAnswer.ToString();
+        }
+
+        public string GetAnswers()
+        {
+            return this.Answers.Aggregate(string.Empty, (current, data) => current + $"{data}, ");
+        }
+
+#endregion
+
+
+#region API
+
         public void StartGame()
         {
-            this.GameState = GameState.Playing;
-            this.Deck.Reset();
+            this._gameState = GameState.Playing;
+
+            this.GenerateNewDeck();
         }
 
         public void DecreaseTime(TimeSpan value)
         {
-            this.RemainTurnTime -= value;
+            this._remainTurnTime -= value;
         }
 
         public void ResetTime()
         {
-            this.RemainTurnTime = TimeSpan.FromSeconds(this.resetTime);
+            this._remainTurnTime = TimeSpan.FromSeconds(this.resetTime);
         }
-
+        
+        /// <summary>
+        /// Generates a new deck and calculates possible answers.
+        /// </summary>
         private void GenerateNewDeck()
         {
             // Step 0) Reset Deck
@@ -78,13 +111,13 @@ namespace Model
                         {
                             continue;
                         }
+
+                        var newData = new AnswerData();
+                        newData.Add(this.Deck.Cards[i]);
+                        newData.Add(this.Deck.Cards[j]);
+                        newData.Add(this.Deck.Cards[k]);
                         
-                        this.Answers.Add(new AnswerData
-                        {
-                            Answer1 = temp[0],
-                            Answer2 = temp[1],
-                            Answer3 = temp[2],
-                        });
+                        this.Answers.Add(newData);
                     }
                 }
             }
@@ -93,106 +126,124 @@ namespace Model
             this.PickedAnswer.Reset();
         }
         
-        public SelectResult TryToggleCard(int index)
+        /// <summary>
+        /// Toggles the selection state of a card at the specified index.
+        /// </summary>
+        /// <param name="index">The index of the card to toggle.</param>
+        /// <returns>
+        /// A <see cref="ToggleResult"/> indicating the result of the toggle operation:
+        /// <list type="bullet">
+        /// <item><description><see cref="ToggleResult.AlreadyCompleted"/> if the picked answer is already completed.</description></item>
+        /// <item><description><see cref="ToggleResult.ToggleOn"/> if the card was successfully added to the picked answer.</description></item>
+        /// <item><description><see cref="ToggleResult.ToggleOff"/> if the card was successfully removed from the picked answer.</description></item>
+        /// <item><description><see cref="ToggleResult.SystemError"/> if there was an error during the toggle operation.</description></item>
+        /// </list>
+        /// </returns>
+        public ToggleResult ToggleCard(int index)
         {
             var value = this.Deck.Cards[index];
             
             if (this.PickedAnswer.IsCompleted)
             {
-                return SelectResult.AlreadyCompleted; // Already Completed
+                return ToggleResult.AlreadyCompleted; // Already Completed
             }
             
-            if (!this.PickedAnswer.Contain(value))
+            if (!this.PickedAnswer.Contains(value))
             {
                 if (this.PickedAnswer.Add(value))
                 {
-                    return SelectResult.ToggleOn;
+                    return ToggleResult.ToggleOn;
                 }
             }
             else
             {
                 if (this.PickedAnswer.Remove(value))
                 {
-                    return SelectResult.ToggleOff;
+                    return ToggleResult.ToggleOff;
                 }
             }
             
-            return SelectResult.SystemError;
-        }
-
-        public bool IsPicked(int value)
-        {
-            return this.PickedAnswer.Contain(value);
-        }
-
-        public bool TrySubmitAnswer()
-        {
-            if (this.HasRemainAnswer)
-            {
-            }
-
-            if (this.IsCorrectAnswer())
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        public bool IsCompletePicked => this.PickedAnswer.IsCompleted;
-        
-        public bool HasRemainAnswer => this.Answers.Count > 0;
-
-        public int[] DeckList => this.Deck.Cards;
-        public int DeckSize => this.Deck?.Cards?.Length ?? 0;
-
-        public string GetPicked()
-        {
-            return $"{this.PickedAnswer.Answer1}, {this.PickedAnswer.Answer2}, {this.PickedAnswer.Answer3}";
-        }
-
-        private void GameStart()
-        {
-            // localGameModel.currentCards.Clear();
-            // localGameModel.answers.Clear();
-            // var pickedCards = this.PickCards();
-            // var answer = this.GetAnswer(pickedCards);
-            // for(var i = 0; i < 9; ++i)
-            // {
-            //     localGameModel.currentCards.Add(localGameModel.gameBoardModelAsset.cardSpriteList[pickedCards[i]]);
-            // }
-            //
-            // foreach (var t in answer)
-            // {
-            //     localGameModel.answers.Add(t);
-            // }
-            //
-            // gameBoardView.UpdateView(localGameModel.currentCards);
-        }
-
-        public bool IsCorrectAnswer()
-        {
-            foreach (var answerData in this.Answers)
-            {
-                if (answerData.Equals(this.PickedAnswer.Answer1, this.PickedAnswer.Answer2, this.PickedAnswer.Answer3))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        public void IncreaseScore(int value)
-        {
-            this.Score += value;
-            this.Combo += 1;
+            return ToggleResult.SystemError;
         }
         
-        public void DecreaseScore(int value)
+        /// <summary>
+        /// Submits the picked answer and returns the result.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="SummitResult"/> indicating whether the submitted answer is correct or incorrect.
+        /// </returns>
+        public SummitResult SubmitPicked()
         {
-            this.Score -= value;
-            this.Combo = 0;
+            var result = SummitResult.Incorrect;
+            
+            if (!this.HasRemainAnswer)
+            {
+                result = SummitResult.Incorrect;
+            }
+
+            if (this.Answers.Any(e => e.Equals(this.PickedAnswer)))
+            {
+                result = SummitResult.Correct;
+            }
+
+            if (result == SummitResult.Correct)
+            {
+                this._score += this.GetCalculatedPoint(false);
+                this._combo++;
+            }
+            else
+            {
+                this._score += -1;
+                this._combo = 0;
+            }
+
+            this.PickedAnswer.Reset();
+
+            return result;
         }
+        
+        public SummitResult SubmitGyeol()
+        {
+            var result = this.HasRemainAnswer ? SummitResult.Correct : SummitResult.Incorrect;
+            
+            if (result == SummitResult.Correct)
+            {
+                this._score += this.GetCalculatedPoint(true);
+                this._combo++;
+            }
+            else
+            {
+                this._score += -2;
+                this._combo = 0;
+            }
+
+            this.PickedAnswer.Reset();
+            
+            return result;
+        }
+        
+#endregion
+
+#region Helper
+
+        private int GetCalculatedPoint(bool isGyeol)
+        {
+            var result = 0;
+
+            if (this._combo > 0)
+            {
+                result += 1;
+            }
+
+            if (this._combo > 10)
+            {
+                result += 1;
+            }
+
+            return result;
+        }
+
+#endregion
+
     }
 }

@@ -3,14 +3,20 @@ using Domain;
 
 namespace Model.Interface
 {
-    public enum SelectResult
+    public enum ToggleResult
     {
         ToggleOn,
         ToggleOff,
         AlreadyCompleted,
         SystemError,
     }
-    
+
+    public enum SummitResult
+    {
+        Correct,
+        Incorrect,
+    }
+
     public interface IGameModel
     {
         // State
@@ -23,22 +29,21 @@ namespace Model.Interface
 
         // Query
         public bool HasRemainAnswer { get; }
-        public bool IsCompletePicked { get; }
+        public bool IsPickCompleted { get; }
         public int[] DeckList { get; }
         public int DeckSize { get; }
         
         public bool IsPicked(int value);
         public string GetPicked();
+        public string GetAnswers();
 
 
         // API
         public void StartGame();
 
-        public SelectResult TryToggleCard(int value);
-        public bool TrySubmitAnswer();
-        
-        public void DecreaseScore(int value);
-        public void IncreaseScore(int value);
+        public ToggleResult ToggleCard(int value);
+        public SummitResult SubmitPicked();
+        public SummitResult SubmitGyeol();
 
         public void DecreaseTime(TimeSpan value);
         public void ResetTime();
