@@ -25,14 +25,15 @@ namespace Component
         {
             for (var i = 0; i < GameLoop.I.GameModel.DeckSize; i++)
             {
+                var cardNumber = GameLoop.I.GameModel.DeckList[i];
                 this.boardView.UpdateView(
                     index: i,
                     data: new CardData
                     {
-                        isSelected = GameLoop.I.GameModel.IsPicked(i),
-                        iconImage = GameLoop.I.GameSetting.GetIconImage(i),
-                        iconColor = GameLoop.I.GameSetting.GetIconColor(i),
-                        baseColor = GameLoop.I.GameSetting.GetBaseColor(i),
+                        isSelected = GameLoop.I.GameModel.IsPicked(cardNumber),
+                        iconImage = GameLoop.I.GameSetting.GetIconImage(cardNumber),
+                        iconColor = GameLoop.I.GameSetting.GetIconColor(cardNumber),
+                        baseColor = GameLoop.I.GameSetting.GetBaseColor(cardNumber),
                     });
             }
         }

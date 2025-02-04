@@ -15,8 +15,9 @@ namespace Domain
 
         public void Reset()
         {
+            var random = new System.Random();
             this.Cards = Enumerable.Range(0, 27)
-                .OrderBy(_ => UnityEngine.Random.value)
+                .OrderBy(_ => random.Next())
                 .ToArray()[..this.Size];
         }
         
