@@ -9,11 +9,11 @@ using View;
 
 namespace Component
 {
-    public class BoardComponent : MonoBehaviour, IAwakableComponent, IUpdatableComponent
+    public class BoardComponent : MonoBehaviour, IStartableComponent, IUpdatableComponent
     {
         public BoardView boardView;
 
-        public void ComponentAwake()
+        public void ComponentStart()
         {
             this.boardView.OnClickAsObservable()
                 .Where(_ => GameLoop.I.GameModel.IsGamePlaying)

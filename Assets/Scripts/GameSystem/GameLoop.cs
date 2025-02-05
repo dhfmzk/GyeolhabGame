@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Component.Attribute;
 using Component.Interface;
 using Model;
 using Model.Interface;
@@ -24,12 +23,12 @@ namespace GameSystem
         [Space]
         [Header("Game Managable Components")] 
         [SerializeField]
-        private List<GameObject> awakableGameObjects;
-        private List<IAwakableComponent> awakableComponents = new();
+        private List<GameObject> startableGameObjects;
+        private List<IStartableComponent> _startableComponents = new();
         
         [SerializeField]
         private List<GameObject> updatableGameObjects;
-        private List<IUpdatableComponent> updatableComponents = new();
+        private List<IUpdatableComponent> _updatableComponents = new();
         
         public GameSetting GameSetting => this.gameSetting;
         public IGameModel GameModel => this.gameModel;
@@ -38,13 +37,13 @@ namespace GameSystem
         {
             this.SingletonInit();
             
-            foreach (var gameObject in this.awakableGameObjects.Where(e => e != null))
+            foreach (var gameObject in this.startableGameObjects.Where(e => e != null))
             {
-                var awakableComponents = gameObject.GetComponents<IAwakableComponent>();
+                var startableComponents = gameObject.GetComponents<IStartableComponent>();
                 
-                foreach (var awakableComponent in awakableComponents)
+                foreach (var awakableComponent in startableComponents)
                 {
-                    this.awakableComponents.Add(awakableComponent);
+                    this._startableComponents.Add(awakableComponent);
                 }
             }
             
@@ -54,16 +53,16 @@ namespace GameSystem
                 
                 foreach (var updatableComponent in updatableComponents)
                 {
-                    this.updatableComponents.Add(updatableComponent);
+                    this._updatableComponents.Add(updatableComponent);
                 }
             }
         }
 
         public void Start()
         {
-            foreach (var component in this.awakableComponents)
+            foreach (var component in this._startableComponents)
             {
-                component.ComponentAwake();
+                component.ComponentStart();
             }
         }
 
@@ -71,7 +70,7 @@ namespace GameSystem
         {
             var deltaTime = TimeSpan.FromSeconds(Time.deltaTime);
             
-            foreach (var component in this.updatableComponents)
+            foreach (var component in this._updatableComponents)
             {
                 component.ComponentUpdate(deltaTime);
             }

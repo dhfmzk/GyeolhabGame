@@ -70,9 +70,14 @@ namespace Domain
             return this.Contains(answer1) && this.Contains(answer2) && this.Contains(answer3);
         }
         
-        public bool Equals(in AnswerData answer)
+        public bool IsEquals(AnswerData answer)
         {
             if (answer == null)
+            {
+                return false;
+            }
+            
+            if (this.answers[0] == this.answers[1] || this.answers[0] == this.answers[2] || this.answers[1] == this.answers[2])
             {
                 return false;
             }

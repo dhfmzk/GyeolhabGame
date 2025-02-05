@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Component
 {
     [Serializable]
-    public class InfoComponent : MonoBehaviour, IAwakableComponent, IUpdatableComponent
+    public class InfoComponent : MonoBehaviour, IStartableComponent, IUpdatableComponent
     {
         public TextMeshProUGUI scoreText;
         public TextMeshProUGUI comboText;
@@ -18,7 +18,7 @@ namespace Component
         private const string FormatScore = "{0} Point";
         private const string FormatCombo = "{0} Combo";
 
-        public void ComponentAwake()
+        public void ComponentStart()
         {
             this.scoreText.text = string.Format(FormatScore, GameLoop.I.GameModel.Score.ToString());
             this.comboText.text = string.Format(FormatCombo, GameLoop.I.GameModel.Combo.ToString());

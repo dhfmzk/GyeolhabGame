@@ -65,7 +65,6 @@ namespace Model
 
 #endregion
 
-
 #region API
 
         public void StartGame()
@@ -181,7 +180,7 @@ namespace Model
                 result = SummitResult.Incorrect;
             }
 
-            if (this.Answers.Any(e => e.Equals(this.PickedAnswer)))
+            if (this.Answers.Any(e => e.IsEquals(this.PickedAnswer)))
             {
                 result = SummitResult.Correct;
             }
@@ -228,7 +227,7 @@ namespace Model
 
         private int GetCalculatedPoint(bool isGyeol)
         {
-            var result = 0;
+            var result = 1;
 
             if (this._combo > 0)
             {

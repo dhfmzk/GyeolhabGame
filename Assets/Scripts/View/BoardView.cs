@@ -20,7 +20,6 @@ namespace View
                 cardView.OnClickAsObservable()
                     .Subscribe(x =>
                     {
-                        Debug.Log("????");
                         this._subject.OnNext(index);
                     })
                     .AddTo(this.gameObject);
