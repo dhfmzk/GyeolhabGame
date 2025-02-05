@@ -21,7 +21,8 @@ namespace Model.Interface
     {
         // State
         public bool IsGamePlaying { get; }
-        public TimeSpan RemainTurnTime { get; }
+        public TimeSpan RemainTurnTimeSpan { get; }
+        public double RemainTurnTime { get; }
 
         public int Score { get; }
         public int Combo { get; }

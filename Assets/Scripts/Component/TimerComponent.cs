@@ -1,17 +1,22 @@
 ﻿using System;
 using Component.Interface;
+using Domain;
 using GameSystem;
-using R3;
 using UnityEngine;
 using View;
 
 namespace Component
 {
     [Serializable]
-    public class TimerComponent : MonoBehaviour, IUpdatableComponent
+    public class TimerComponent : MonoBehaviour, IStartableComponent, IUpdatableComponent
     {
         public TimerView timerView;
 
+        public void ComponentStart()
+        {
+            this.timerView.UpdateView(TimerData.Default);
+        }
+        
         public void ComponentUpdate(TimeSpan deltaTime)
         {
             if (!GameLoop.I.GameModel.IsGamePlaying)
@@ -22,10 +27,15 @@ namespace Component
             
             GameLoop.I.GameModel.DecreaseTime(deltaTime);
 
-            if (GameLoop.I.GameModel.RemainTurnTime <= TimeSpan.FromSeconds(0.0f))
+            if (GameLoop.I.GameModel.RemainTurnTime <= 0.0d)
             {
                 GameLoop.I.GameModel.ResetTime();
             }
+            
+            this.timerView.UpdateView(new TimerData
+            {
+                remainTime = GameLoop.I.GameModel.RemainTurnTime,
+            });
         }
     }
 }

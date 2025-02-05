@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Domain;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace View
@@ -6,17 +7,10 @@ namespace View
     public class TimerView : MonoBehaviour
     {
         public Image timerGauge;
-        
-        // Start is called before the first frame update
-        void Start()
-        {
-        
-        }
 
-        // Update is called once per frame
-        void Update()
+        public void UpdateView(in TimerData data)
         {
-        
+            this.timerGauge.fillAmount = (float)data.remainTime;
         }
     }
 }

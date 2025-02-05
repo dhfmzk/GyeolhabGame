@@ -10,7 +10,7 @@ namespace Model
     [Serializable]
     public class GameModel : IGameModel
     {
-        public float resetTime = 3000.0f;
+        public float resetTime = 30.0f;
         private GameState _gameState { get; set; }
         private PlayingState _playingState { get; set; }
         private TimeSpan _remainTurnTime { get; set; }
@@ -28,7 +28,8 @@ namespace Model
 
         public int Score => this._score;
         public int Combo => this._combo;
-        public TimeSpan RemainTurnTime => this._remainTurnTime;
+        public TimeSpan RemainTurnTimeSpan => this._remainTurnTime;
+        public double RemainTurnTime => this._remainTurnTime.TotalSeconds / this.resetTime;
         public bool IsGamePlaying => this.GameState == GameState.Playing;
         
         public GameModel()

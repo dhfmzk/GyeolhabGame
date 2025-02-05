@@ -24,11 +24,11 @@ namespace GameSystem
         [Header("Game Managable Components")] 
         [SerializeField]
         private List<GameObject> startableGameObjects;
-        private List<IStartableComponent> _startableComponents = new();
+        private readonly List<IStartableComponent> _startableComponents = new();
         
         [SerializeField]
         private List<GameObject> updatableGameObjects;
-        private List<IUpdatableComponent> _updatableComponents = new();
+        private readonly List<IUpdatableComponent> _updatableComponents = new();
         
         public GameSetting GameSetting => this.gameSetting;
         public IGameModel GameModel => this.gameModel;
