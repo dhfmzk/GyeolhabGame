@@ -29,6 +29,7 @@ namespace Component
 
             if (GameLoop.I.GameModel.RemainTurnTime <= 0.0d)
             {
+                GameLoop.I.GameModel.SubmitPicked();
                 GameLoop.I.GameModel.ResetTime();
             }
             

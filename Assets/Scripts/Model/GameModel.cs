@@ -75,6 +75,11 @@ namespace Model
             this.GenerateNewDeck();
         }
 
+        public void FinishGame()
+        {
+            this._gameState = GameState.Result;
+        }
+
         public void DecreaseTime(TimeSpan value)
         {
             this._remainTurnTime -= value;
@@ -181,22 +186,36 @@ namespace Model
                 result = SummitResult.Incorrect;
             }
 
-            if (this.Answers.Any(e => e.IsEquals(this.PickedAnswer)))
+            var index = -1;
+            for (var i = 0; i < this.Answers.Count; ++i)
+            {
+                if (!this.Answers[i].IsEquals(this.PickedAnswer))
+                {
+                    continue;
+                }
+                
+                index = i;
+                break;
+            }
+            
+            if (index != -1)
             {
                 result = SummitResult.Correct;
             }
 
             if (result == SummitResult.Correct)
             {
+                this.Answers.RemoveAt(index);
+                
                 this._score += this.GetCalculatedPoint(false);
                 this._combo++;
             }
             else
             {
-                this._score += -1;
+                this._score -= 1;
                 this._combo = 0;
             }
-
+            
             this.PickedAnswer.Reset();
 
             return result;
@@ -204,7 +223,7 @@ namespace Model
         
         public SummitResult SubmitGyeol()
         {
-            var result = this.HasRemainAnswer ? SummitResult.Correct : SummitResult.Incorrect;
+            var result = this.HasRemainAnswer ? SummitResult.Incorrect : SummitResult.Correct;
             
             if (result == SummitResult.Correct)
             {
@@ -213,7 +232,7 @@ namespace Model
             }
             else
             {
-                this._score += -2;
+                this._score -= 2;
                 this._combo = 0;
             }
 

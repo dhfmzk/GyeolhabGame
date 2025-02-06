@@ -44,15 +44,14 @@ namespace Component
             
             Debug.Log($"[{typeof(BoardComponent)}|{result}] Picked Answer : {GameLoop.I.GameModel.GetPicked()} | Answer : {GameLoop.I.GameModel.GetAnswers()}");
 
-            if (result != ToggleResult.ToggleOn)
+            if (result != ToggleResult.ToggleOn ||
+                !GameLoop.I.GameModel.IsPickCompleted)
             {
                 return;
             }
             
-            if (GameLoop.I.GameModel.IsPickCompleted)
-            {
-                GameLoop.I.GameModel.SubmitPicked();
-            }
+            GameLoop.I.GameModel.SubmitPicked();
+            GameLoop.I.GameModel.ResetTime();
         }
     }
 }

@@ -29,11 +29,13 @@ namespace Component
             if (GameLoop.I.GameModel.Score != this._prevScore)
             {
                 this.scoreText.text = string.Format(FormatScore, GameLoop.I.GameModel.Score.ToString());
+                this._prevScore = GameLoop.I.GameModel.Score;
             }
 
             if (GameLoop.I.GameModel.Combo != this._prevCombo)
             {
                 this.comboText.text = string.Format(FormatCombo, GameLoop.I.GameModel.Combo.ToString());
+                this._prevCombo = GameLoop.I.GameModel.Combo;
             }
         }
     }

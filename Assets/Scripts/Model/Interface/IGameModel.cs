@@ -41,6 +41,7 @@ namespace Model.Interface
 
         // API
         public void StartGame();
+        public void FinishGame();
 
         public ToggleResult ToggleCard(int value);
         public SummitResult SubmitPicked();
